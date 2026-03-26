@@ -144,7 +144,7 @@ Main modules:
 
 This modular architecture mirrors real fintech production systems.
 
-⸻
+
 
 # Why This Project Is Different
 
