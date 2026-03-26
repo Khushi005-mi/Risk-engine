@@ -1,0 +1,19 @@
+import numpy as np
+
+
+class ShapBaselineManager:
+
+    @staticmethod
+    def save(X, path: str, max_samples: int = 1000):
+        """
+        X: feature matrix AFTER pipeline
+        """
+
+        if len(X) > max_samples:
+            indices = np.random.choice(len(X), max_samples, replace=False)
+            baseline = X[indices]
+        else:
+            baseline = X
+
+        np.save(path, baseline)
+        

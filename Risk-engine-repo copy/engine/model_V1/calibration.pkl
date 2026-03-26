@@ -1,0 +1,21 @@
+from sklearn.calibration import CalibratedClassifierCV
+import joblib
+
+
+class CalibrationModel:
+
+    def __init__(self):
+        self.calibrator = None
+
+    def fit(self, model, X, y):
+        self.calibrator = CalibratedClassifierCV(model, method="isotonic", cv=3)
+        self.calibrator.fit(X, y)
+
+    def predict(self, X):
+        return self.calibrator.predict_proba(X)[:, 1]
+
+    def save(self, path):
+        joblib.dump(self.calibrator, path)
+
+    def load(self, path):
+        self.calibrator = joblib.load(path)

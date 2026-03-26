@@ -1,0 +1,11 @@
+import joblib
+
+class ModelPersistence:
+
+    @staticmethod
+    def save_model(model, path: str):
+        joblib.dump(model, path)
+
+    @staticmethod
+    def load_model(path: str):
+        return joblib.load(path)

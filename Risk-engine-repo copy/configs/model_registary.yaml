@@ -1,0 +1,85 @@
+# #model_registry.yaml defines the official registry of all approved models that the credit risk engine can use.
+# This file is critical for:
+# model governance
+# auditability
+# regulatory reproducibility
+# controlled promotion of models
+# In regulated financial systems (NBFC / banks), models cannot simply be replaced by changing a .pkl file. Every model must be:
+# versioned
+# documented
+# approved
+# traceable
+# This file acts as the single source of truth for production model versions.
+registry_version: 1
+
+active_model: credit_pd_model_v1
+
+models:
+
+  credit_pd_model_v1:
+    model_name: credit_pd_model_v1
+    model_type: logistic_regression
+    training_dataset: loan_training_dataset_v1
+    training_date: 2026-03-10
+    model_artifact_path: models/registry/credit_pd_model_v1.pkl
+    scaler_path: models/registry/credit_pd_model_v1_scaler.pkl
+    feature_list_path: models/registry/credit_pd_model_v1_features.json
+
+    performance_metrics:
+      auc: 0.812
+      ks: 0.43
+      recall_at_10_fpr: 0.71
+
+    training_parameters:
+      solver: lbfgs
+      penalty: l2
+      max_iter: 1000
+      random_seed: 42
+
+    approval:
+      model_risk_team: approved
+      approval_date: 2026-03-12
+      approved_by: model_risk_committee
+
+    deployment:
+      environment: production
+      deterministic_output: true
+      probability_rounding_decimals: 6
+
+    drift_reference_dataset:
+      path: monitoring/reference/reference_distribution.parquet
+      baseline_date: 2026-03-10
+
+  credit_pd_model_v2_candidate:
+    model_name: credit_pd_model_v2_candidate
+    model_type: logistic_regression
+    training_dataset: loan_training_dataset_v2
+    training_date: 2026-04-02
+    model_artifact_path: models/registry/credit_pd_model_v2.pkl
+    scaler_path: models/registry/credit_pd_model_v2_scaler.pkl
+    feature_list_path: models/registry/credit_pd_model_v2_features.json
+
+    performance_metrics:
+      auc: 0.835
+      ks: 0.47
+      recall_at_10_fpr: 0.74
+
+    training_parameters:
+      solver: lbfgs
+      penalty: l2
+      max_iter: 1000
+      random_seed: 42
+
+    approval:
+      model_risk_team: pending
+      approval_date: null
+      approved_by: null
+
+    deployment:
+      environment: staging
+      deterministic_output: true
+      probability_rounding_decimals: 6
+
+    drift_reference_dataset:
+      path: monitoring/reference/reference_distribution.parquet
+      baseline_date: 2026-04-02

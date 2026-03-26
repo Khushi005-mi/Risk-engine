@@ -1,0 +1,54 @@
+{
+    "schema_version": "1.0",
+    "file_format": "csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "header_required": true,
+  
+    "column_order_enforced": true,
+  
+    "columns": [
+      {
+        "order": 1,
+        "name": "loan_id",
+        "type": "string",
+        "required": true,
+        "max_length": 64,
+        "nullable": false
+      },
+      {
+        "order": 2,
+        "name": "PD_12M",
+        "type": "decimal",
+        "precision": 9,
+        "scale": 6,
+        "min_value": 0.000000,
+        "max_value": 1.000000,
+        "rounding_mode": "HALF_UP",
+        "nullable": false
+      },
+      {
+        "order": 3,
+        "name": "model_version",
+        "type": "string",
+        "required": true,
+        "pattern": "^\\d+\\.\\d+\\.\\d+$",
+        "nullable": false
+      },
+      {
+        "order": 4,
+        "name": "scoring_timestamp",
+        "type": "datetime",
+        "format": "ISO-8601",
+        "timezone": "UTC",
+        "nullable": false
+      }
+    ],
+  
+    "batch_rules": {
+      "reject_if_missing_columns": true,
+      "reject_if_extra_columns": true,
+      "reject_if_column_order_changed": true,
+      "reject_if_duplicate_loan_ids": true
+    }
+  }

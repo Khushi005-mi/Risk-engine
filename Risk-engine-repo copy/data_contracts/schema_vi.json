@@ -1,0 +1,119 @@
+{
+    "schema_version": "1.0",
+    "file_format": "csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "header_required": true,
+  
+    "columns": [
+      {
+        "name": "schema_version",
+        "type": "string",
+        "required": true,
+        "allowed_values": ["1.0"],
+        "nullable": false
+      },
+      {
+        "name": "loan_id",
+        "type": "string",
+        "required": true,
+        "max_length": 64,
+        "unique_within_batch": true,
+        "nullable": false
+      },
+      {
+        "name": "sanction_date",
+        "type": "date",
+        "required": true,
+        "format": "YYYY-MM-DD",
+        "max_value": "scoring_date",
+        "nullable": false
+      },
+      {
+        "name": "loan_amount",
+        "type": "float",
+        "required": true,
+        "min_value": 0.01,
+        "max_value": 10000000,
+        "nullable": false
+      },
+      {
+        "name": "tenure_months",
+        "type": "integer",
+        "required": true,
+        "min_value": 1,
+        "max_value": 120,
+        "nullable": false
+      },
+      {
+        "name": "bureau_score",
+        "type": "integer",
+        "required": true,
+        "min_value": 300,
+        "max_value": 900,
+        "nullable": false
+      },
+      {
+        "name": "income",
+        "type": "float",
+        "required": true,
+        "min_value": 1,
+        "max_value": 50000000,
+        "nullable": false
+      },
+      {
+        "name": "employment_type",
+        "type": "string",
+        "required": true,
+        "allowed_values": [
+          "SALARIED",
+          "SELF_EMPLOYED",
+          "GOVERNMENT"
+        ],
+        "nullable": false
+      },
+      {
+        "name": "city_tier",
+        "type": "integer",
+        "required": true,
+        "allowed_values": [1, 2, 3],
+        "nullable": false
+      },
+      {
+        "name": "avg_monthly_balance",
+        "type": "float",
+        "required": true,
+        "min_value": 0,
+        "nullable": false
+      },
+      {
+        "name": "emi_bounce_count",
+        "type": "integer",
+        "required": true,
+        "min_value": 0,
+        "max_value": 50,
+        "nullable": false
+      }
+    ],
+  
+    "training_only_columns": [
+      {
+        "name": "dpd_12m",
+        "type": "integer",
+        "required": true,
+        "min_value": 0,
+        "max_value": 365,
+        "nullable": false
+      }
+    ],
+  
+    "batch_rules": {
+      "reject_if_extra_columns": true,
+      "reject_if_missing_columns": true,
+      "reject_if_duplicate_loan_ids": true,
+      "reject_if_training_columns_present": true,
+      "max_file_size_mb": 100,
+      "max_invalid_row_percentage": 10,
+      "reject_if_empty": true
+    }
+  }

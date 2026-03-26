@@ -1,0 +1,125 @@
+
+
+:::
+errors:
+
+ERR_001:
+severity: BATCH
+category: SCHEMA
+description: Required column missing from input file
+action: REJECT_BATCH
+http_status: 400
+
+ERR_002:
+severity: ROW
+category: TYPE_VALIDATION
+description: Invalid data type detected in column
+action: REJECT_ROW
+http_status: 422
+
+ERR_003:
+severity: ROW
+category: RANGE_VALIDATION
+description: Value outside allowed range
+action: REJECT_ROW
+http_status: 422
+
+ERR_004:
+severity: BATCH
+category: DATA_INTEGRITY
+description: Duplicate loan_id detected within batch
+action: REJECT_BATCH
+http_status: 400
+
+ERR_005:
+severity: BATCH
+category: SCHEMA_VERSION
+description: schema_version mismatch or unsupported schema
+action: REJECT_BATCH
+http_status: 400
+
+ERR_006:
+severity: ROW
+category: NULL_VALIDATION
+description: Null value detected in required column
+action: REJECT_ROW
+http_status: 422
+
+ERR_007:
+severity: BATCH
+category: DATA_QUALITY
+description: Invalid row ratio exceeded threshold
+action: REJECT_BATCH
+threshold: 0.10
+http_status: 400
+
+ERR_008:
+severity: BATCH
+category: TRAINING_FIELD_VIOLATION
+description: dpd_12m column present in inference batch
+action: REJECT_BATCH
+http_status: 400
+
+ERR_009:
+severity: BATCH
+category: FILE_VALIDATION
+description: Input file contains no data rows
+action: REJECT_BATCH
+http_status: 400
+
+ERR_010:
+severity: BATCH
+category: FILE_SIZE
+description: Uploaded file exceeds configured maximum size
+action: REJECT_BATCH
+max_file_size_mb: 100
+http_status: 413
+
+ERR_011:
+severity: ROW
+category: ENUM_VALIDATION
+description: Value not in allowed category set
+action: REJECT_ROW
+http_status: 422
+
+ERR_012:
+severity: BATCH
+category: COLUMN_ORDER
+description: Input column order does not match schema definition
+action: REJECT_BATCH
+http_status: 400
+
+ERR_013:
+severity: BATCH
+category: EXTRA_COLUMNS
+description: Unexpected columns detected in input file
+action: REJECT_BATCH
+http_status: 400
+
+ERR_014:
+severity: SYSTEM
+category: MODEL_LOADING
+description: Model artifact could not be loaded
+action: FAIL_REQUEST
+http_status: 500
+
+ERR_015:
+severity: SYSTEM
+category: FEATURE_PIPELINE
+description: Feature pipeline execution failed
+action: FAIL_REQUEST
+http_status: 500
+
+ERR_016:
+severity: SYSTEM
+category: SCORING
+description: Model prediction failure
+action: FAIL_REQUEST
+http_status: 500
+
+ERR_017:
+severity: BATCH
+category: OUTPUT_SCHEMA
+description: Generated output does not match output schema
+action: FAIL_REQUEST
+http_status: 500

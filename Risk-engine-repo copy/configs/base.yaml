@@ -1,0 +1,134 @@
+# base.yaml is the central configuration file for the credit risk engine.
+#base.yaml controls things like:
+# batch limits
+# schema version support
+# model registry paths
+# drift thresholds
+# validation rules
+# scoring precision
+# logging policies
+# If this configuration lives inside Python code, governance and audit fail.
+
+
+
+system:
+  name: credit-risk-pd-engine
+  version: 1.0.0
+  environment: production
+
+
+scoring:
+  output_precision: 6
+  batch_max_rows: 500000
+  batch_max_file_size_mb: 100
+  reject_batch_if_invalid_row_ratio_exceeds: 0.10
+
+
+schema:
+  supported_versions:
+    - "1.0"
+
+  required_columns:
+    - schema_version
+    - loan_id
+    - sanction_date
+    - loan_amount
+    - tenure_months
+    - bureau_score
+    - income
+    - employment_type
+    - city_tier
+    - avg_monthly_balance
+    - emi_bounce_count
+
+  training_only_columns:
+    - dpd_12m
+
+
+validation:
+
+  loan_amount:
+    min: 1
+    max: 10000000
+
+  tenure_months:
+    min: 1
+    max: 120
+
+  bureau_score:
+    min: 300
+    max: 900
+
+  income:
+    min: 1
+    max: 50000000
+
+  avg_monthly_balance:
+    min: 0
+
+  emi_bounce_count:
+    min: 0
+    max: 50
+
+  city_tier_allowed_values:
+    - 1
+    - 2
+    - 3
+
+  employment_type_allowed_values:
+    - SALARIED
+    - SELF_EMPLOYED
+    - GOVERNMENT
+
+
+model:
+
+  artifact_directory: /app/artifacts
+
+  model_file: model.pkl
+  pipeline_file: feature_pipeline.pkl
+  metadata_file: model_metadata.json
+
+  expected_feature_count: 12
+
+
+drift_monitoring:
+
+  psi_warning_threshold: 0.2
+  psi_critical_threshold: 0.3
+
+  monitoring_frequency_days: 30
+
+  alert_recipients:
+    - risk_head
+    - model_governance
+    - engineering_owner
+
+
+logging:
+
+  level: INFO
+
+  mask_sensitive_fields: true
+
+  pii_fields:
+    - account_number
+    - pan_number
+    - aadhaar_number
+
+  log_directory: /var/log/pd_engine
+
+
+audit:
+
+  enable_scoring_audit: true
+  store_feature_hash: true
+  store_model_version: true
+  store_scoring_timestamp: true
+
+
+security:
+
+  secrets_provider: aws_secrets_manager
+  enable_strict_schema_validation: true
+  reject_unknown_columns: true

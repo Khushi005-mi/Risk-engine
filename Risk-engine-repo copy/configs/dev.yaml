@@ -1,0 +1,73 @@
+# It modifies selected settings from base.yaml to make the system suitable for:
+# local development
+# testing pipelines
+# debugging scoring logic
+# running experiments
+# faster iteration
+# The base.yaml defines production-safe defaults, while dev.yaml overrides them for development.
+# dev.yaml enables:
+# smaller batch sizes
+# verbose logging
+# local artifact paths
+# local secrets
+# relaxed monitoring rules
+system:
+  environment: development
+
+
+scoring:
+
+  batch_max_rows: 10000
+  batch_max_file_size_mb: 10
+
+  reject_batch_if_invalid_row_ratio_exceeds: 0.20
+
+  output_precision: 6
+
+
+model:
+
+  artifact_directory: ./local_artifacts
+
+  model_file: model.pkl
+  pipeline_file: feature_pipeline.pkl
+  metadata_file: model_metadata.json
+
+  expected_feature_count: 12
+
+
+drift_monitoring:
+
+  psi_warning_threshold: 0.25
+  psi_critical_threshold: 0.40
+
+  monitoring_frequency_days: 7
+
+  alert_recipients:
+    - engineering_owner
+
+
+logging:
+
+  level: DEBUG
+
+  log_directory: ./logs
+
+  mask_sensitive_fields: false
+
+
+audit:
+
+  enable_scoring_audit: true
+
+  store_feature_hash: true
+  store_model_version: true
+  store_scoring_timestamp: true
+
+
+security:
+
+  secrets_provider: local_env
+  enable_strict_schema_validation: true
+  reject_unknown_columns: true
+  

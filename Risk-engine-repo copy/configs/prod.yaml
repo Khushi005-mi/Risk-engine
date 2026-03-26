@@ -1,0 +1,63 @@
+# prod.yaml defines the production runtime configuration of the credit risk engine.
+#This file controls how the system behaves in a regulated NBFC production environment.
+
+# It differs from dev.yaml because production must guarantee:
+# deterministic scoring
+# strict schema enforcement
+# audit logging
+# stable model versioning
+# reproducible scoring
+# regulator-safe outputs
+# Production config must never contain experimental settings.
+
+environment: production
+
+data:
+  input_schema_path: schemas/input_schema_v1.yaml
+  batch_input_directory: /data/incoming_batches
+  scoring_output_directory: /data/scored_batches
+  rejected_rows_directory: /data/rejected_rows
+  archive_directory: /data/archive
+
+validation:
+  enforce_schema: true
+  enforce_range_checks: true
+  enforce_category_checks: true
+  max_row_failure_ratio: 0.02
+  drop_invalid_rows: false
+  abort_batch_on_threshold: true
+
+feature_engineering:
+  snapshot_strategy: disbursal_date
+  allowed_history_days: 0
+  enforce_timestamp_integrity: true
+
+model:
+  model_registry_path: models/registry
+  active_model_version: credit_pd_model_v1
+  model_type: logistic_regression
+  probability_rounding_decimals: 6
+  probability_dtype: float64
+
+scoring:
+  batch_mode: true
+  deterministic_inference: true
+  enable_parallel_scoring: true
+  max_workers: 4
+
+drift_monitoring:
+  enable_monitoring: true
+  psi_threshold: 0.3
+  drift_report_directory: monitoring/reports
+  reference_dataset_path: monitoring/reference/reference_distribution.parquet
+
+logging:
+  log_level: INFO
+  log_directory: logs
+  enable_audit_logging: true
+
+security:
+  enforce_hashing: true
+  hash_algorithm: sha256
+  anonymize_fields:
+    - loan_id
