@@ -6,7 +6,7 @@ The Problem
 
 Traditional credit scoring systems were built for a world where stable salaries, credit cards, and long banking histories were common.
 
-# That world no longer exists.
+## That world no longer exists.
 
 Millions of people today:
 	•	Work in the gig economy
@@ -14,7 +14,7 @@ Millions of people today:
 	•	Are students or early professionals
 	•	Live in emerging markets with thin credit histories
 
-# These people are creditworthy, yet traditional scoring models label them high risk or invisible.
+## These people are creditworthy, yet traditional scoring models label them high risk or invisible.
 
 Result:
 	•	Banks reject good borrowers
